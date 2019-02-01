@@ -1,0 +1,1 @@
+for i in {0..2500}; do cat lorem.txt >> large.txt; done
