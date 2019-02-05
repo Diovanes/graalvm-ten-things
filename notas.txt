@@ -1,0 +1,83 @@
+Reference: https://medium.com/graalvm/graalvm-ten-things-12d9111f307d
+
+
+1. High-performance
+
+  cat TopTen.java
+  javac TopTen.java
+  time java TopTen large.txt
+  #Sem Graal
+  time java -XX:-UseJVMCICompiler TopTen large.txt
+
+1. High-performance
+
+  export PATH=~/graalvm-ce-1.0.0-rc11/bin:$PATH
+  javac CountUppercase.java 
+  java CountUppercase XXXxxxxxXXXXXxxxxxxXXXX
+  java -XX:-UseJVMCICompiler CountUppercase XXXxxxxxXXXXXxxxxxxXXXX
+ 
+2. Fast-startup
+
+  time java TopTen small.txt
+  #Compilar um executável nativo
+  native-image --no-server --allow-incomplete-classpath TopTen
+  time ./topten small.txt
+
+3. Java code as a native library
+
+  cat Distance.java
+  javac -cp sis-referencing-0.8.jar -parameters Distance.java
+  #Londres a NY
+  java -cp sis-referencing-0.8.jar:. Distance 51.507222 -0.1275 40.7127 -74.0059
+  #Compilando como executável nativo
+  native-image --no-server -cp sis-referencing-0.8.jar:. Distance
+  ./distance 51.507222 -0.1275 40.7127 -74.0059
+
+4. Combine JavaScript, Java and R
+
+  cat polyglot.js
+  node --polyglot --jvm polyglot.js
+
+5. Run C (and other native languages) on the JVM
+
+  #Compilando seu próprio gzip!
+  clang -c -emit-llvm gzip.c
+  #Em ação
+  cat small.txt
+  gzip small.txt
+  lli gzip.bc -d small.txt.gz
+  cat small.txt
+
+6. VisualVM
+
+  jvisualvm &> /dev/null &
+  java TopTen large.txt
+
+7. Extend a JVM-based application
+
+  cat ExtendJava.java
+  javac ExtendJava.java
+  #Java
+  java ExtendJava '14 + 2'
+  #JS
+  java ExtendJava -js 'Math.sqrt(14)'
+  #Ruby
+  java ExtendJava -ruby '[4, 2, 3].sort'
+
+
+8. Polyglot in the database
+
+  #Oracle Database Multilingual Engine (MLE)
+  docker run -d --name mle-docker mle-docker-0.2.7
+
+  docker exec -ti mle-docker bash -li
+  sqlplus scott/tiger@localhost:1521/ORCLCDB
+  npm install validator
+  npm install @types/validator
+  sqlplus scott/tiger@localhost:1521/ORCLCDB
+  select validator.isEmail('hello.world@oracle.com') from dual;
+  select validator.isEmail('hello.world') from dual;
+
+9. Create your own language
+
+  https://github.com/graalvm/simplelanguage
