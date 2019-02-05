@@ -1,0 +1,17 @@
+FROM oracle/graalvm-ce:1.0.0-rc11
+
+MAINTAINER elder.moraes@oracle.com
+
+RUN yum install -y time
+
+WORKDIR /test
+
+COPY TopTen.java large.txt small.txt \
+  color.js color-server.js polyglot.js fizzbuzz.js fizzbuzz.py fizzbuzz.rb \
+  fizzbuzz.r render.rb gzip.c Distance.java distance.c  \
+  sis-referencing-0.8.jar extendc.c /test/
+
+RUN cd /test
+
+RUN javac TopTen.java
+CMD ["time", "java", "TopTen", "large.txt"]
